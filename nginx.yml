@@ -1,0 +1,24 @@
+---
+- name: Install nginx on remote host
+  hosts: nginx
+  become: true
+  gather_facts: false
+  tasks:
+    - wait_for_connection:
+
+    - setup:
+
+    - name: Install nginx
+      apt:
+        name: nginx
+        state: latest
+
+    - name: Start nginx
+      service: 
+        name: nginx
+        state: started
+    
+    - name: Make sure nginx is running
+      systemd:
+        state: started
+        name: nginx
