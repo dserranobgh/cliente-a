@@ -1,0 +1,13 @@
+ami = "ami-0fc5d935ebf8bc3bc"
+instance_type = "t2.micro"
+key_name = "cliente-A"
+vpc_security_group_ids = ["sg-0c1555c717c96bf95"]
+subnet_id = "subnet-0e90debcbd2e5cf13"
+security_groups = ["sg-0c1555c717c96bf95"]
+subnets = ["subnet-0e90debcbd2e5cf13","subnet-0594db4b75e15b5aa"]
+vpc_id = "vpc-0a1541057fbc156f3"
+name = "Cliente_A_WebServer"
+certificate_arn = "arn:aws:acm:us-east-1:145628923514:certificate/b71fb968-dcde-404f-860b-e5f49b10cce9"
+domain_name = "webhostingcloudtest.click"
+record_name = "clientea"
+private_key_path = "../modules/ec2_alb/cliente-A.pem"
