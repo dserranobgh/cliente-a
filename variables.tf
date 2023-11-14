@@ -22,6 +22,8 @@ variable "certificate_arn" {}
 
 variable "private_key_path" {}
 
+variable "public_key" {}
+
 #Route 53 variables
 
 variable "domain_name" {}
