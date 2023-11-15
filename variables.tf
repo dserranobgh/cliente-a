@@ -4,8 +4,6 @@ variable "ami" {}
 
 variable "instance_type" {}
 
-variable "key_name" {}
-
 variable "vpc_security_group_ids" {}
 
 variable "subnet_id" {}
@@ -20,9 +18,9 @@ variable "name" {}
 
 variable "certificate_arn" {}
 
-variable "private_key_path" {}
-
 variable "public_key" {}
+
+variable "key_name" {}
 
 #Route 53 variables
 

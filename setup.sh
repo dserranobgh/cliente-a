@@ -3,11 +3,12 @@
 set -eux
 
 ansible-galaxy collection install cloud.terraform
-mv terraform.tfstate terraform.tfstate.bkp
+
 
 terraform init
 terraform apply -auto-approve
-mv terraform.tfstate.bkp terraform.tfstate
+
+chmod 400 cliente_a_key
 
 ansible-playbook -i inventory.yml nginx.yml
 ansible-playbook -i inventory.yml copyapp.yml

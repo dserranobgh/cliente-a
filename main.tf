@@ -1,12 +1,12 @@
-terraform {
-  backend "s3" {
-    bucket = "terraform-state-cliente-a"
-    key = "global/s3/terraform-tfstate"
-    region = "us-east-1"
-    dynamodb_table = "terraform-statke-locking"
-    encrypt = true
-  }
-}
+#terraform {
+#  backend "s3" {
+#    bucket = "terraform-state-cliente-a"
+#    key = "global/s3/terraform-tfstate"
+#    region = "us-east-1"
+#    dynamodb_table = "terraform-statke-locking"
+#    encrypt = true
+#  }
+#}
 
 terraform {
   required_providers {
@@ -27,43 +27,43 @@ provider "aws" {
 
 # create an S3 bucket to store tfstate
 
-resource "aws_s3_bucket" "terraform-state" {
-  bucket = "terraform-state-cliente-a"
+# resource "aws_s3_bucket" "terraform-state" {
+#   bucket = "terraform-state-cliente-a"
 
-  lifecycle {
-    prevent_destroy = true
-  }
-}
+#   lifecycle {
+#     prevent_destroy = false
+#   }
+# }
 
-resource "aws_s3_bucket_versioning" "versioning_test" {
-  bucket = aws_s3_bucket.terraform-state.id
-  versioning_configuration {
-    status = "Enabled"
-  }
-}
+# resource "aws_s3_bucket_versioning" "versioning_test" {
+#   bucket = aws_s3_bucket.terraform-state.id
+#   versioning_configuration {
+#     status = "Enabled"
+#   }
+# }
 
-resource "aws_s3_bucket_server_side_encryption_configuration" "side_cfg_test" {
-  bucket = aws_s3_bucket.terraform-state.id
-  rule {
-    apply_server_side_encryption_by_default {
-      sse_algorithm = "AES256"
-    }
-  }
-}
+# resource "aws_s3_bucket_server_side_encryption_configuration" "side_cfg_test" {
+#   bucket = aws_s3_bucket.terraform-state.id
+#   rule {
+#     apply_server_side_encryption_by_default {
+#       sse_algorithm = "AES256"
+#     }
+#   }
+# }
 
-# create dynamo db table
+# # create dynamo db table
 
-resource "aws_dynamodb_table" "terraform_locks" {
-  name = "terraform-statke-locking"
-  billing_mode = "PAY_PER_REQUEST"
-  hash_key = "LockID"
+# resource "aws_dynamodb_table" "terraform_locks" {
+#   name = "terraform-statke-locking"
+#   billing_mode = "PAY_PER_REQUEST"
+#   hash_key = "LockID"
 
-  attribute {
-    name = "LockID"
-    type = "S"
-  }
+#   attribute {
+#     name = "LockID"
+#     type = "S"
+#   }
   
-}
+# }
 
 # create application load balancer
 resource "aws_lb" "application_load_balancer" {
@@ -164,16 +164,33 @@ resource "aws_route53_record" "site_domain" {
 # create SSH key for ssh connection
 
 resource "aws_key_pair" "cliente_a" {
-  key_name = var.key_name
-  public_key = var.public_key
+  key_name = "cliente_a"
+  public_key = tls_private_key.cliente_a_priv.public_key_openssh
 }
 
+
+ resource "tls_private_key" "cliente_a_priv" {
+   algorithm = "RSA"
+   rsa_bits = 4096
+ }
+
+
+
+resource "local_file" "cliente_a" {
+   content  = tls_private_key.cliente_a_priv.private_key_pem
+   filename = "cliente_a_key"
+ }
+
+# resource "aws_key_pair" "key121" {
+#   key_name   = "myterrakey"
+#   public_key = tls_private_key.oskey.public_key_openssh
+# }
 
 # create EC2 instance
 resource "aws_instance" "webserver" {
     ami                    = var.ami
     instance_type          = var.instance_type
-    key_name               = var.key_name
+    key_name               = "cliente_a"
     tags = {
     Name = "Cliente A WebApp"
   } 
@@ -188,7 +205,7 @@ resource "ansible_host" "webserver" {
   groups                         = ["nginx"]
   variables = {
     ansible_user                 = "ubuntu",
-    ansible_ssh_private_key_file = var.private_key_path,
+    ansible_ssh_private_key_file = "cliente_a_key",
     ansible_python_interpreter   = "/usr/bin/python3",
   }
 }
