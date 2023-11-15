@@ -1,12 +1,12 @@
-#terraform {
-#  backend "s3" {
-#    bucket = "terraform-state-cliente-a"
-#    key = "global/s3/terraform-tfstate"
-#    region = "us-east-1"
-#    dynamodb_table = "terraform-statke-locking"
-#    encrypt = true
-#  }
-#}
+terraform {
+ backend "s3" {
+   bucket = "cliente-a-tfstate"
+   key = "global/s3/terraform-tfstate"
+   region = "us-east-1"
+   dynamodb_table = "cliente-a-statke-locking"
+   encrypt = true
+ }
+}
 
 terraform {
   required_providers {
@@ -25,45 +25,33 @@ provider "aws" {
     region = "us-east-1"
 }
 
-# create an S3 bucket to store tfstate
+# # create an S3 bucket to store tfstate
 
-# resource "aws_s3_bucket" "terraform-state" {
-#   bucket = "terraform-state-cliente-a"
+# # resource "aws_s3_bucket" "terraform-state" {
+# #   bucket = "terraform-state-cliente-a"
 
-#   lifecycle {
-#     prevent_destroy = false
-#   }
-# }
+# #   lifecycle {
+# #     prevent_destroy = false
+# #   }
+# # }
 
-# resource "aws_s3_bucket_versioning" "versioning_test" {
-#   bucket = aws_s3_bucket.terraform-state.id
-#   versioning_configuration {
-#     status = "Enabled"
-#   }
-# }
+# # resource "aws_s3_bucket_versioning" "versioning_test" {
+# #   bucket = aws_s3_bucket.terraform-state.id
+# #   versioning_configuration {
+# #     status = "Enabled"
+# #   }
+# # }
 
-# resource "aws_s3_bucket_server_side_encryption_configuration" "side_cfg_test" {
-#   bucket = aws_s3_bucket.terraform-state.id
-#   rule {
-#     apply_server_side_encryption_by_default {
-#       sse_algorithm = "AES256"
-#     }
-#   }
-# }
+# # resource "aws_s3_bucket_server_side_encryption_configuration" "side_cfg_test" {
+# #   bucket = aws_s3_bucket.terraform-state.id
+# #   rule {
+# #     apply_server_side_encryption_by_default {
+# #       sse_algorithm = "AES256"
+# #     }
+# #   }
+# # }
 
-# # create dynamo db table
 
-# resource "aws_dynamodb_table" "terraform_locks" {
-#   name = "terraform-statke-locking"
-#   billing_mode = "PAY_PER_REQUEST"
-#   hash_key = "LockID"
-
-#   attribute {
-#     name = "LockID"
-#     type = "S"
-#   }
-  
-# }
 
 # create application load balancer
 resource "aws_lb" "application_load_balancer" {
@@ -165,11 +153,11 @@ resource "aws_route53_record" "site_domain" {
 
 resource "aws_key_pair" "cliente_a" {
   key_name = "cliente_a"
-  public_key = tls_private_key.cliente_a_priv.public_key_openssh
+  public_key = tls_private_key.cliente_a.public_key_openssh
 }
 
 
- resource "tls_private_key" "cliente_a_priv" {
+ resource "tls_private_key" "cliente_a" {
    algorithm = "RSA"
    rsa_bits = 4096
  }
@@ -177,14 +165,10 @@ resource "aws_key_pair" "cliente_a" {
 
 
 resource "local_file" "cliente_a" {
-   content  = tls_private_key.cliente_a_priv.private_key_pem
+   content  = tls_private_key.cliente_a.private_key_pem
    filename = "cliente_a"
  }
 
-# resource "aws_key_pair" "key121" {
-#   key_name   = "myterrakey"
-#   public_key = tls_private_key.oskey.public_key_openssh
-# }
 
 # create EC2 instance
 resource "aws_instance" "webserver" {
@@ -194,10 +178,22 @@ resource "aws_instance" "webserver" {
     tags = {
     Name = "Cliente A WebApp"
   } 
+      #provisioner "local-exec" {
+      #  command = "ssh -o 'StrictHostKeyChecking no' -i cliente_a ubuntu@${aws_instance.webserver.public_dns}"
+  
     vpc_security_group_ids = var.vpc_security_group_ids
     subnet_id              = var.subnet_id
 }
 
+# create a null resource to use rf vars in bash
+
+resource "null_resource" "provisione" {
+
+  provisioner "local-exec" {
+    command = "export dns_public=${aws_instance.webserver.public_dns}"
+    interpreter = [ "bash", "-c" ]
+  }
+}
 
 # Add created ec2 instance to ansible inventory
 resource "ansible_host" "webserver" {

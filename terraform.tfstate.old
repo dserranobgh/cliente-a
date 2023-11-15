@@ -1,14 +1,9 @@
 {
   "version": 4,
   "terraform_version": "1.6.3",
-  "serial": 11,
+  "serial": 9,
   "lineage": "29d35e0f-8ea4-f155-a060-fe87563072fd",
-  "outputs": {
-    "webserver_dns_name": {
-      "value": "ec2-35-171-82-204.compute-1.amazonaws.com",
-      "type": "string"
-    }
-  },
+  "outputs": {},
   "resources": [
     {
       "mode": "data",
@@ -34,7 +29,7 @@
             ],
             "primary_name_server": "ns-1163.awsdns-17.org",
             "private_zone": false,
-            "resource_record_set_count": 38,
+            "resource_record_set_count": 37,
             "tags": {},
             "vpc_id": null,
             "zone_id": "Z05599531ZSX9MK8VDCWU"
@@ -248,7 +243,7 @@
             "key_pair_id": "key-0db276a10c5554a4d",
             "key_type": "rsa",
             "public_key": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDcC521Io0Sh3giuyRjBSx/nmellqPVILZXpWFTvPVfJhoGoXU3/qEM1PB/YWoq7VUaqmVPT+Ox7Ae5wFYwwY+fuVk2Qg2cJbsxZN0/3KlzQq88ASQZbgEbUKapvS45rYCzn8REXYSeAlpkOYjKQvZgpWa1Q1+fp8oCinYFFU0T+KkzvmUd9rmZjMo7/P9U+AstjWNfwqYWioeHFmh2BD45IVmlcwn5/D1ZR9RRHOo3T1tgGTTms2iI9V+on/aOBgBNFqDQ0fc49AliHo0yTSsS0Mbr+XgGpFc6ZxmZ2bVC/4RkT3v+5Fu5T07yhDEYcQBn00v/bfFMWctUWE5jUr9lf+W61jvWDa2016YMlstO8vETVDMf91sNFUj8CYyP8pkPLeSb+aXjXwMZl5wuVHbe3HnEz8RMIO0inyEx1EoHJOqTRPJpJM9v2JODjgIUaP42ugBNk2FgFv0BYXLUhqm6j58pe3zYwwakQE+/Vj4g20367LemU17Fp7/gEFE3XUitqGYUCQL64nCt/OiJ1v8+tcH96xPEM78i6DD66AhaGUb5oZfd5sRqmgI0Uj6hul6uzHnzSnVZO1oBrMRTSQi5fBEASK35gNInqXPfYos9to3zWxPWEauj61EAb2LmQ71vHsKprhnwBjHCbeH0UDfkWWssPcfjP1Taux2GRDK3lQ==",
-            "tags": {},
+            "tags": null,
             "tags_all": {}
           },
           "sensitive_attributes": [],
@@ -372,7 +367,7 @@
             "port": 80,
             "protocol": "HTTP",
             "ssl_policy": "",
-            "tags": {},
+            "tags": null,
             "tags_all": {},
             "timeouts": null
           },
@@ -413,7 +408,7 @@
             "port": 443,
             "protocol": "HTTPS",
             "ssl_policy": "ELBSecurityPolicy-2016-08",
-            "tags": {},
+            "tags": null,
             "tags_all": {},
             "timeouts": null
           },
@@ -473,7 +468,7 @@
                 "type": "lb_cookie"
               }
             ],
-            "tags": {},
+            "tags": null,
             "tags_all": {},
             "target_failover": [
               {
@@ -516,7 +511,7 @@
             "latency_routing_policy": [],
             "multivalue_answer_routing_policy": false,
             "name": "clientea",
-            "records": [],
+            "records": null,
             "set_identifier": "",
             "ttl": 0,
             "type": "A",
@@ -598,4 +593,3 @@
   ],
   "check_results": null
 }
-
