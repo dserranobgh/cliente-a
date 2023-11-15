@@ -8,7 +8,7 @@ ansible-galaxy collection install cloud.terraform
 terraform init
 terraform apply -auto-approve
 
-chmod 400 cliente_a_key
+chmod 400 cliente_a
 
 ansible-playbook -i inventory.yml nginx.yml
 ansible-playbook -i inventory.yml copyapp.yml

@@ -178,7 +178,7 @@ resource "aws_key_pair" "cliente_a" {
 
 resource "local_file" "cliente_a" {
    content  = tls_private_key.cliente_a_priv.private_key_pem
-   filename = "cliente_a_key"
+   filename = "cliente_a"
  }
 
 # resource "aws_key_pair" "key121" {
@@ -190,7 +190,7 @@ resource "local_file" "cliente_a" {
 resource "aws_instance" "webserver" {
     ami                    = var.ami
     instance_type          = var.instance_type
-    key_name               = "cliente_a"
+    key_name               = aws_key_pair.cliente_a.key_name
     tags = {
     Name = "Cliente A WebApp"
   } 
@@ -205,7 +205,7 @@ resource "ansible_host" "webserver" {
   groups                         = ["nginx"]
   variables = {
     ansible_user                 = "ubuntu",
-    ansible_ssh_private_key_file = "cliente_a_key",
+    ansible_ssh_private_key_file = "cliente_a",
     ansible_python_interpreter   = "/usr/bin/python3",
   }
 }
