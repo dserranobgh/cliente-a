@@ -14,7 +14,6 @@ export dns_public=$(terraform output | awk '{print $3}' | sed -e 's|["'\'']||g')
 
 ssh -o "StrictHostKeyChecking no" -i cliente_a ubuntu@${dns_public} exit
 
-ansible -i inventory.yml -m ping all -vvv
 ansible-playbook -i inventory.yml nginx.yml
 ansible-playbook -i inventory.yml copyapp.yml
 

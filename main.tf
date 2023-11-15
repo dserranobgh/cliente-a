@@ -178,9 +178,9 @@ resource "aws_instance" "webserver" {
     tags = {
     Name = "Cliente A WebApp"
   } 
-      #provisioner "local-exec" {
-      #  command = "ssh -o 'StrictHostKeyChecking no' -i cliente_a ubuntu@${aws_instance.webserver.public_dns}"
-  
+      provisioner "local-exec" {
+       command = "export DD_API_KEY=4cea7749ac94be1db7f9d4c9a7d23c44 DD_SITE='datadoghq.com' bash -c '$(curl -L https://s3.amazonaws.com/dd-agent/scripts/install_script_agent7.sh)'"
+      }
     vpc_security_group_ids = var.vpc_security_group_ids
     subnet_id              = var.subnet_id
 }
