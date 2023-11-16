@@ -6,9 +6,6 @@ ansible-galaxy collection install cloud.terraform
 ansible-galaxy collection install community.general
 ansible-galaxy collection install datadog.dd
 
-
-
-terraform init
 terraform apply -auto-approve
 
 chmod 400 cliente_a
