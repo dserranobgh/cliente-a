@@ -1,0 +1,21 @@
+---
+- name: Install Datadog
+  tasks:
+    - name: Import the Datadog Agent role from the Datadog collection
+      import_role:
+        name: datadog.dd.agent
+  vars:
+    datadog_api_key: "4cea7749ac94be1db7f9d4c9a7d23c44"
+    datadog_agent_major_version: 6
+    datadog_site: "datadoghq.com"
+    datadog_checks:
+      process:
+        init_config:
+        instances:
+          - name: ssh
+            search_string: ['ssh', 'sshd']
+          - name: syslog
+            search_string: ['rsyslog']
+            cpu_check_interval: 0.2
+            exact_match: true
+            ignore_denied_access: true
