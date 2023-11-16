@@ -1,7 +1,15 @@
 ---
 - name: Install Datadog
   hosts: nginx
+  become: true
   tasks:
+    #- name: Change permission on lock file
+    #  file:
+    #    path: /var/lib/apt/list/lock
+    #    state: file
+    #    owner: ubuntu
+    #    group: ubuntu
+    #    mode:  0755
     - name: Import the Datadog Agent role from the Datadog collection
       import_role:
         name: datadog.dd.agent
