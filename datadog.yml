@@ -1,5 +1,6 @@
 ---
 - name: Install Datadog
+  hosts: nginx
   tasks:
     - name: Import the Datadog Agent role from the Datadog collection
       import_role:
